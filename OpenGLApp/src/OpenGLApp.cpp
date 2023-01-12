@@ -2,37 +2,23 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "Window.h"
+
 int main() {
 	if (!glfwInit()) {
 		return -1;
 	}
 
-	glfwDefaultWindowHints();
-	glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+	GLTemplate::Window* window = new GLTemplate::Window(1600, 900, "OpenGL Template");
 
-	glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 
-	GLFWwindow* windowHandle = glfwCreateWindow(1600, 900, "OpenGL Template", NULL, NULL);
-
-	if (windowHandle == NULL) {
-		return -1;
+	// Game Loop
+	while (window->IsOpen()) {
+		
+		window->Clear(vec3{0.0f});
+		
+		window->Update();
 	}
-	glfwMakeContextCurrent(windowHandle);
-	glfwSwapInterval(1);
 
-	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-
-	glfwShowWindow(windowHandle);
-
-	while (!glfwWindowShouldClose(windowHandle)) {
-		glfwPollEvents();
-
-		glClearColor(0.3f, 0.4f, 0.8f, 1);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		unsigned int buffer;
-		glGenBuffers(1, &buffer);
-
-		glfwSwapBuffers(windowHandle);
-	}
+	delete window;
 }
